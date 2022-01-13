@@ -5,7 +5,7 @@ const mainController = {
     homePage: async function (req, res) {
         try {
             const getUsers = await userSchema.find();
-            console.log(getUsers);
+            console.log('getusers', getUsers);
             res.status(200).json(getUsers);
         } catch (e) { console.log(e) }
 

@@ -1,28 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <formulaire></formulaire>
+    <table-of-data v-bind:dataOfUsers="users"></table-of-data>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Formulaire from "./components/formulaire.vue";
+import TableOfData from "./components/TableOfData.vue";
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    formulaire: Formulaire,
+    "table-of-data": TableOfData,
+  },
+  data: function () {
+    return {
+      users: [
+        { _id: 1, lastname: "doe", firstname: "john" },
+        { _id: 2, lastname: "Poutine", firstname: "Vladimir" },
+      ],
+    };
+  },
+  methods: {
+    getUsers: async function () {
+      const dataUsers = await axios.get("http://localhost:3002/");
+      // console.log("data", dataUsers.data[0]);
+      this.users = dataUsers.data;
+      console.log("usersinmethod", this.users[0].firstname);
+    },
+  },
+  created: function () {
+    console.log("il est créé");
+    this.getUsers();
+    console.log("users", this.users);
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped src="./App.css"></style>
